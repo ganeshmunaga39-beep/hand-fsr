@@ -7,12 +7,10 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
@@ -25,10 +23,7 @@
       align-items: center;
     }
 
-    .dashboard {
-      max-width: 1300px;
-      width: 100%;
-    }
+    .dashboard { max-width: 1400px; width: 100%; }
 
     h1 {
       font-weight: 500;
@@ -75,9 +70,7 @@
       transition: border-color 0.2s;
     }
 
-    .card:hover {
-      border-color: #2e4057;
-    }
+    .card:hover { border-color: #2e4057; }
 
     .card-header {
       display: flex;
@@ -152,10 +145,7 @@
       margin-top: 10px;
     }
 
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-    }
+    .stat-item { display: flex; flex-direction: column; }
 
     .stat-label {
       font-size: 0.7rem;
@@ -171,9 +161,7 @@
       color: #e8edf5;
     }
 
-    .stat-value.small {
-      font-size: 1rem;
-    }
+    .stat-value.small { font-size: 1rem; }
 
     .alert-tag {
       display: inline-block;
@@ -184,25 +172,12 @@
       margin-left: 6px;
     }
 
-    .normal {
-      background: #0e2a1f;
-      color: #4ade80;
-    }
-
-    .alert {
-      background: #3b1212;
-      color: #f87171;
-      animation: pulse 1.2s infinite;
-    }
+    .normal { background: #0e2a1f; color: #4ade80; }
+    .alert { background: #3b1212; color: #f87171; animation: pulse 1.2s infinite; }
 
     @keyframes pulse {
-      0%,
-      100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.65;
-      }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
     }
 
     .accel-grid {
@@ -243,16 +218,8 @@
       justify-content: space-between;
     }
 
-    .temp-label {
-      font-size: 0.8rem;
-      color: #7d8fa8;
-    }
-
-    .temp-value {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #f0c27b;
-    }
+    .temp-label { font-size: 0.8rem; color: #7d8fa8; }
+    .temp-value { font-size: 1.2rem; font-weight: 600; color: #f0c27b; }
 
     .status-bar {
       margin-top: 18px;
@@ -320,10 +287,7 @@
       border-radius: 16px;
     }
 
-    .device-info span {
-      color: #b9c7db;
-      font-weight: 500;
-    }
+    .device-info span { color: #b9c7db; font-weight: 500; }
 
     .footer-note {
       margin-top: 22px;
@@ -333,34 +297,94 @@
       letter-spacing: 0.5px;
     }
 
+    /* Chart specific */
+    .chart-section {
+      margin-bottom: 22px;
+    }
+
+    .chart-card {
+      background: #141b2b;
+      border-radius: 24px;
+      padding: 22px 24px;
+      border: 1px solid #253040;
+      box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.7);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chart-header h2 {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #b0c4de;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .chart-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: #8b9bb5;
+    }
+
+    .chart-controls select {
+      background: #101725;
+      color: #e0e6f0;
+      border: 1px solid #253040;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .chart-wrapper {
+      position: relative;
+      height: 320px;
+      width: 100%;
+    }
+
+    .chart-wrapper.small { height: 260px; }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .clear-btn {
+      background: #1e2e44;
+      color: #7aa9f0;
+      border: none;
+      border-radius: 8px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .clear-btn:hover { background: #2a3f5e; }
+
     @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .fsr-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      h1 {
-        font-size: 1.4rem;
-        flex-wrap: wrap;
-      }
+      .grid { grid-template-columns: 1fr; }
+      .fsr-grid { grid-template-columns: repeat(3, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.4rem; flex-wrap: wrap; }
     }
 
     @media (max-width: 520px) {
-      .fsr-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .accel-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stat-row {
-        flex-wrap: wrap;
-        gap: 12px;
-      }
+      .fsr-grid { grid-template-columns: repeat(2, 1fr); }
+      .accel-grid { grid-template-columns: 1fr; }
+      .stat-row { flex-wrap: wrap; gap: 12px; }
+      .chart-wrapper { height: 240px; }
     }
   </style>
 </head>
@@ -436,8 +460,99 @@
           <div><span class="stat-label">Source</span> <span class="stat-value small" id="alertSource">—</span></div>
         </div>
 
-        <!-- Status bar -->
         <div class="status-bar" id="statusBar">SYSTEM NORMAL</div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- LIVE CHARTS SECTION                                          -->
+    <!-- ============================================================ -->
+    <div class="chart-section">
+      <div class="charts-grid">
+        <!-- FSR Line Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>📈 FSR Live Trend</h2>
+            <div class="chart-controls">
+              <label>Points:</label>
+              <select id="fsrPointsSelect">
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <button class="clear-btn" id="clearFsrChart">Clear</button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="fsrChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Acceleration Line Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>⚡ Acceleration Trend</h2>
+            <div class="chart-controls">
+              <label>Points:</label>
+              <select id="accelPointsSelect">
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <button class="clear-btn" id="clearAccelChart">Clear</button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="accelChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second row of charts -->
+    <div class="chart-section">
+      <div class="charts-grid">
+        <!-- Gyroscope Line Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>🌀 Gyroscope Trend</h2>
+            <div class="chart-controls">
+              <label>Points:</label>
+              <select id="gyroPointsSelect">
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <button class="clear-btn" id="clearGyroChart">Clear</button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="gyroChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Total Acceleration + Alerts Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>📉 Total Accel &amp; Alerts</h2>
+            <div class="chart-controls">
+              <label>Points:</label>
+              <select id="totalPointsSelect">
+                <option value="20">20</option>
+                <option value="30" selected>30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <button class="clear-btn" id="clearTotalChart">Clear</button>
+            </div>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="totalChart"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -457,80 +572,229 @@
   <script>
     (function() {
       // ============================================================
-      // FIREBASE CONFIG — same as ESP32
+      // FIREBASE CONFIG
       // ============================================================
       const firebaseConfig = {
         apiKey: "AIzaSyCpHKr6NHo7Zd1o71zOtpCWSBGm3sMV_ws",
         databaseURL: "https://hand-fsr-default-rtdb.asia-southeast1.firebasedatabase.app"
       };
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
 
       // ============================================================
-      // DOM REFERENCES
+      // DOM HELPERS
       // ============================================================
       const $ = (id) => document.getElementById(id);
 
-      // FSR
-      const fsrEls = {
-        1: $('fsr1'),
-        2: $('fsr2'),
-        3: $('fsr3'),
-        4: $('fsr4'),
-        5: $('fsr5')
-      };
-      const fsrTotalEl = $('fsrTotal');
-      const fsrAvgEl = $('fsrAvg');
-      const fsrMaxEl = $('fsrMax');
-      const fsrMaxSensorEl = $('fsrMaxSensor');
-
-      // Accel / Gyro
-      const accXEl = $('accX');
-      const accYEl = $('accY');
-      const accZEl = $('accZ');
-      const gyroXEl = $('gyroX');
-      const gyroYEl = $('gyroY');
-      const gyroZEl = $('gyroZ');
-      const mpuTempEl = $('mpuTemp');
-      const totalAccelEl = $('totalAccel');
-
-      // Alerts
-      const pressureAlertTag = $('pressureAlertTag');
-      const impactAlertTag = $('impactAlertTag');
-      const alertSourceEl = $('alertSource');
-      const statusBar = $('statusBar');
-
-      // Time
-      const dateStrEl = $('dateStr');
-      const timeStrEl = $('timeStr');
-
-      // Device
-      const devBoard = $('devBoard');
-      const devRssi = $('devRssi');
-      const devIp = $('devIp');
-      const devMac = $('devMac');
-      const devUptime = $('devUptime');
-      const devHeap = $('devHeap');
-
-      // Connection
-      const connDot = $('connDot');
-      const connText = $('connText');
-
-      // ============================================================
-      // HELPER: format number
-      // ============================================================
       function fmt(val, decimals = 0) {
         if (val === undefined || val === null || isNaN(val)) return '—';
         if (decimals === 0) return Math.round(val).toString();
         return Number(val).toFixed(decimals);
       }
-
       function fmtFloat(val, decimals = 2) {
         if (val === undefined || val === null || isNaN(val)) return '—';
         return Number(val).toFixed(decimals);
       }
+
+      // ============================================================
+      // CHART.JS CONFIGURATION
+      // ============================================================
+      Chart.defaults.color = '#8b9bb5';
+      Chart.defaults.borderColor = '#1e2a3a';
+      Chart.defaults.font.family = "'Segoe UI', Roboto, system-ui, sans-serif";
+      Chart.defaults.font.size = 11;
+
+      const commonOptions = (yLabel, maxPoints) => ({
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 0 },
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            labels: {
+              boxWidth: 12,
+              boxHeight: 12,
+              padding: 14,
+              color: '#b0c4de',
+              font: { size: 11, weight: '500' }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#0b0f1c',
+            titleColor: '#e0e6f0',
+            bodyColor: '#b0c4de',
+            borderColor: '#253040',
+            borderWidth: 1,
+            padding: 10,
+            cornerRadius: 8,
+            displayColors: true,
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: '#141b2b', drawBorder: false },
+            ticks: {
+              color: '#5c6f87',
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 6
+            }
+          },
+          y: {
+            grid: { color: '#1a2333', drawBorder: false },
+            ticks: { color: '#5c6f87' },
+            title: {
+              display: true,
+              text: yLabel,
+              color: '#6d7f97',
+              font: { size: 10, weight: '600' }
+            }
+          }
+        },
+        elements: {
+          point: { radius: 0, hoverRadius: 4 },
+          line: { tension: 0.35, borderWidth: 2 }
+        }
+      });
+
+      // ----- FSR chart -----
+      const fsrChart = new Chart($('fsrChart'), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            { label: 'FSR1', data: [], borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.08)', fill: false },
+            { label: 'FSR2', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.08)', fill: false },
+            { label: 'FSR3', data: [], borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.08)', fill: false },
+            { label: 'FSR4', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.08)', fill: false },
+            { label: 'FSR5', data: [], borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.08)', fill: false },
+          ]
+        },
+        options: commonOptions('ADC value (0–4095)')
+      });
+
+      // ----- Acceleration chart -----
+      const accelChart = new Chart($('accelChart'), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            { label: 'Accel X', data: [], borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.08)', fill: false },
+            { label: 'Accel Y', data: [], borderColor: '#4ade80', backgroundColor: 'rgba(74,222,128,0.08)', fill: false },
+            { label: 'Accel Z', data: [], borderColor: '#60a5fa', backgroundColor: 'rgba(96,165,250,0.08)', fill: false },
+          ]
+        },
+        options: commonOptions('Acceleration (m/s²)')
+      });
+
+      // ----- Gyroscope chart -----
+      const gyroChart = new Chart($('gyroChart'), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            { label: 'Gyro X', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.08)', fill: false },
+            { label: 'Gyro Y', data: [], borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.08)', fill: false },
+            { label: 'Gyro Z', data: [], borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,0.08)', fill: false },
+          ]
+        },
+        options: commonOptions('Angular velocity (rad/s)')
+      });
+
+      // ----- Total acceleration chart -----
+      const totalChart = new Chart($('totalChart'), {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Total Accel',
+              data: [],
+              borderColor: '#f472b6',
+              backgroundColor: 'rgba(244,114,182,0.12)',
+              fill: true,
+              tension: 0.35,
+            },
+            {
+              label: 'Impact Threshold (20 m/s²)',
+              data: [],
+              borderColor: '#ef4444',
+              borderDash: [6, 4],
+              borderWidth: 1.5,
+              pointRadius: 0,
+              fill: false,
+            }
+          ]
+        },
+        options: commonOptions('m/s²')
+      });
+
+      // ============================================================
+      // CHART DATA MANAGEMENT
+      // ============================================================
+      const MAX_POINTS = 100;
+
+      function pushPoint(chart, values) {
+        const label = new Date().toLocaleTimeString('en-IN', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((ds, i) => {
+          ds.data.push(values[i] !== undefined ? values[i] : null);
+        });
+
+        // Trim to max points
+        const limit = parseInt(
+          document.querySelector(`#${chart.canvas.id.replace('Chart', 'PointsSelect')}`)?.value || 30
+        );
+        while (chart.data.labels.length > limit) {
+          chart.data.labels.shift();
+          chart.data.datasets.forEach(ds => ds.data.shift());
+        }
+
+        chart.update('none');
+      }
+
+      function clearChart(chart) {
+        chart.data.labels = [];
+        chart.data.datasets.forEach(ds => { ds.data = []; });
+        chart.update('none');
+      }
+
+      // Clear buttons
+      $('clearFsrChart').addEventListener('click', () => clearChart(fsrChart));
+      $('clearAccelChart').addEventListener('click', () => clearChart(accelChart));
+      $('clearGyroChart').addEventListener('click', () => clearChart(gyroChart));
+      $('clearTotalChart').addEventListener('click', () => clearChart(totalChart));
+
+      // Point selectors
+      ['fsr', 'accel', 'gyro', 'total'].forEach(name => {
+        const sel = $(`${name}PointsSelect`);
+        if (sel) {
+          sel.addEventListener('change', () => {
+            const chart = {
+              fsr: fsrChart,
+              accel: accelChart,
+              gyro: gyroChart,
+              total: totalChart
+            }[name];
+            const limit = parseInt(sel.value);
+            while (chart.data.labels.length > limit) {
+              chart.data.labels.shift();
+              chart.data.datasets.forEach(ds => ds.data.shift());
+            }
+            chart.update('none');
+          });
+        }
+      });
 
       // ============================================================
       // UPDATE UI FROM SNAPSHOT
@@ -540,94 +804,119 @@
 
         // ---- FSR ----
         const fsr = data.sensors?.fsr || {};
-        const fsrVals = [
-          fsr.fsr1, fsr.fsr2, fsr.fsr3, fsr.fsr4, fsr.fsr5
-        ];
 
         for (let i = 1; i <= 5; i++) {
-          const el = fsrEls[i];
+          const el = $(`fsr${i}`);
           if (el) el.textContent = fmt(fsr[`fsr${i}`]);
         }
 
-        fsrTotalEl.textContent = fmt(fsr.total);
-        fsrAvgEl.textContent = fmtFloat(fsr.average, 1);
-        fsrMaxEl.textContent = fmt(fsr.maximum);
-        fsrMaxSensorEl.textContent = fsr.maximumSensor ? `FSR${fsr.maximumSensor}` : '—';
+        $('fsrTotal').textContent = fmt(fsr.total);
+        $('fsrAvg').textContent = fmtFloat(fsr.average, 1);
+        $('fsrMax').textContent = fmt(fsr.maximum);
+        $('fsrMaxSensor').textContent = fsr.maximumSensor ? `FSR${fsr.maximumSensor}` : '—';
 
         // ---- MPU6050 ----
         const mpu = data.sensors?.mpu6050 || {};
         const acc = mpu.accelerometer || {};
         const gyro = mpu.gyroscope || {};
 
-        accXEl.textContent = fmtFloat(acc.x, 2);
-        accYEl.textContent = fmtFloat(acc.y, 2);
-        accZEl.textContent = fmtFloat(acc.z, 2);
+        $('accX').textContent = fmtFloat(acc.x, 2);
+        $('accY').textContent = fmtFloat(acc.y, 2);
+        $('accZ').textContent = fmtFloat(acc.z, 2);
 
-        gyroXEl.textContent = fmtFloat(gyro.x, 3);
-        gyroYEl.textContent = fmtFloat(gyro.y, 3);
-        gyroZEl.textContent = fmtFloat(gyro.z, 3);
+        $('gyroX').textContent = fmtFloat(gyro.x, 3);
+        $('gyroY').textContent = fmtFloat(gyro.y, 3);
+        $('gyroZ').textContent = fmtFloat(gyro.z, 3);
 
-        mpuTempEl.textContent = fmtFloat(mpu.temperature, 1) + ' °C';
-        totalAccelEl.textContent = fmtFloat(data.sensors?.motion?.totalAcceleration, 2) + ' m/s²';
+        $('mpuTemp').textContent = fmtFloat(mpu.temperature, 1) + ' °C';
+        const totalAccel = data.sensors?.motion?.totalAcceleration;
+        $('totalAccel').textContent = fmtFloat(totalAccel, 2) + ' m/s²';
 
         // ---- ALERTS ----
         const alerts = data.alerts || {};
         const pressureAlert = alerts.pressureAlert === true;
         const impactAlert = alerts.impactAlert === true;
 
-        // Pressure tag
         if (pressureAlert) {
-          pressureAlertTag.textContent = 'ALERT';
-          pressureAlertTag.className = 'alert-tag alert';
+          $('pressureAlertTag').textContent = 'ALERT';
+          $('pressureAlertTag').className = 'alert-tag alert';
         } else {
-          pressureAlertTag.textContent = 'OK';
-          pressureAlertTag.className = 'alert-tag normal';
+          $('pressureAlertTag').textContent = 'OK';
+          $('pressureAlertTag').className = 'alert-tag normal';
         }
 
-        // Impact tag
         if (impactAlert) {
-          impactAlertTag.textContent = 'ALERT';
-          impactAlertTag.className = 'alert-tag alert';
+          $('impactAlertTag').textContent = 'ALERT';
+          $('impactAlertTag').className = 'alert-tag alert';
         } else {
-          impactAlertTag.textContent = 'OK';
-          impactAlertTag.className = 'alert-tag normal';
+          $('impactAlertTag').textContent = 'OK';
+          $('impactAlertTag').className = 'alert-tag normal';
         }
 
-        alertSourceEl.textContent = alerts.source || 'NONE';
+        $('alertSource').textContent = alerts.source || 'NONE';
 
-        // Status bar
         if (pressureAlert || impactAlert) {
-          statusBar.textContent = '⚠️ ' + (alerts.status || 'WARNING');
-          statusBar.className = 'status-bar warning';
+          $('statusBar').textContent = '⚠️ ' + (alerts.status || 'WARNING');
+          $('statusBar').className = 'status-bar warning';
         } else {
-          statusBar.textContent = '✅ ' + (alerts.status || 'SYSTEM NORMAL');
-          statusBar.className = 'status-bar';
+          $('statusBar').textContent = '✅ ' + (alerts.status || 'SYSTEM NORMAL');
+          $('statusBar').className = 'status-bar';
         }
 
         // ---- TIME ----
         const time = data.time || {};
-        dateStrEl.textContent = time.date || '—';
-        timeStrEl.textContent = time.time || '—';
+        $('dateStr').textContent = time.date || '—';
+        $('timeStr').textContent = time.time || '—';
 
         // ---- DEVICE ----
         const device = data.device || {};
-        devBoard.textContent = device.board || '—';
-        devRssi.textContent = device.wifiRSSI ?? '—';
-        devIp.textContent = device.ipAddress || '—';
-        devMac.textContent = device.macAddress || '—';
+        $('devBoard').textContent = device.board || '—';
+        $('devRssi').textContent = device.wifiRSSI ?? '—';
+        $('devIp').textContent = device.ipAddress || '—';
+        $('devMac').textContent = device.macAddress || '—';
 
-        // Uptime formatting
         if (device.uptimeMillis !== undefined && device.uptimeMillis !== null) {
           const totalSec = Math.floor(device.uptimeMillis / 1000);
           const hrs = Math.floor(totalSec / 3600);
           const mins = Math.floor((totalSec % 3600) / 60);
           const secs = totalSec % 60;
-          devUptime.textContent = `${hrs}h ${mins}m ${secs}s`;
+          $('devUptime').textContent = `${hrs}h ${mins}m ${secs}s`;
         } else {
-          devUptime.textContent = '—';
+          $('devUptime').textContent = '—';
         }
 
-        devHeap.textContent = device.freeHeap !== undefined ? device.freeHeap.toLocaleString() + ' B' : '—';
+        $('devHeap').textContent = device.freeHeap !== undefined
+          ? device.freeHeap.toLocaleString() + ' B'
+          : '—';
+
+        // ============================================================
+        // PUSH DATA POINTS TO CHARTS
+        // ============================================================
+        const fsrValues = [
+          fsr.fsr1 ?? 0,
+          fsr.fsr2 ?? 0,
+          fsr.fsr3 ?? 0,
+          fsr.fsr4 ?? 0,
+          fsr.fsr5 ?? 0
+        ];
+        pushPoint(fsrChart, fsrValues);
+
+        const accelValues = [
+          acc.x ?? 0,
+          acc.y ?? 0,
+          acc.z ?? 0
+        ];
+        pushPoint(accelChart, accelValues);
+
+        const gyroValues = [
+          gyro.x ?? 0,
+          gyro.y ?? 0,
+          gyro.z ?? 0
+        ];
+        pushPoint(gyroChart, gyroValues);
+
+        const totalAccelValue = totalAccel ?? 0;
+        pushPoint(totalChart, [totalAccelValue, 20]);
       }
 
       // ============================================================
@@ -636,17 +925,14 @@
       db.ref('/latest').on('value',
         (snapshot) => {
           const data = snapshot.val();
-          if (data) {
-            updateUI(data);
-          }
-          // Connection indicator
-          connDot.className = 'dot';
-          connText.textContent = 'Live · /latest';
+          if (data) updateUI(data);
+          $('connDot').className = 'dot';
+          $('connText').textContent = 'Live · /latest';
         },
         (error) => {
           console.error('Firebase read error:', error);
-          connDot.className = 'dot disconnected';
-          connText.textContent = 'Read error';
+          $('connDot').className = 'dot disconnected';
+          $('connText').textContent = 'Read error';
         }
       );
 
@@ -656,29 +942,22 @@
       db.ref('.info/connected').on('value', (snap) => {
         const connected = snap.val() === true;
         if (connected) {
-          connDot.className = 'dot';
-          connText.textContent = 'Connected';
+          $('connDot').className = 'dot';
+          $('connText').textContent = 'Connected';
         } else {
-          connDot.className = 'dot disconnected';
-          connText.textContent = 'Disconnected';
+          $('connDot').className = 'dot disconnected';
+          $('connText').textContent = 'Disconnected';
         }
       });
 
       // ============================================================
-      // OPTIONAL: anonymous auth (same as ESP32)
+      // ANONYMOUS AUTH
       // ============================================================
       firebase.auth().signInAnonymously()
-        .then(() => {
-          console.log('Firebase anonymous auth OK');
-        })
-        .catch((err) => {
-          console.warn('Anonymous auth error (database rules may allow read):', err.message);
-        });
+        .then(() => console.log('Firebase anonymous auth OK'))
+        .catch((err) => console.warn('Anonymous auth:', err.message));
 
-      // ============================================================
-      // INITIAL PLACEHOLDER
-      // ============================================================
-      console.log('Smart Hand Pressure Monitor dashboard ready.');
+      console.log('Smart Hand Pressure Monitor dashboard with charts ready.');
     })();
   </script>
 </body>
